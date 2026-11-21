@@ -3019,24 +3019,4 @@ ${d.benefits.map((C)=>`✅ ${C}`).join(`
       if (!url){ status.textContent="⚠️ حط رابط Vercel أولا (deploy api/describe.js و حط GEMINI_API_KEY + SERPAPI_KEY في Vercel Dashboard)."; return; }
       window.VERCEL_API_URL=url; localStorage.setItem("LP_VERCEL_URL", url);
       var imgSrc = getProductImage();
-      if (!imgSrc){ status.textContent="⚠️ رفع صورة المنتج أولا."; return; }
-      status.textContent="⏳ 1/4 تحليل الصورة... 2/4 البحث في AliExpress / Alibaba / Google / Pinterest...";
-      try{
-        var conv = await toBase64(imgSrc);
-        var titleEl = document.querySelector('input[placeholder*="Product"], input[placeholder*="منتج"]');
-        var r = await fetch(url, { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ imageBase64: conv.b64, mime: conv.mime, productName: (titleEl&&titleEl.value)||"", lang: "ar" }) });
-        var j = await r.json();
-        if (j.error) throw new Error(j.error);
-        status.innerHTML = (j.found ? "✅ لقيت المنتج نيت ("+(j.match_percent||"")+"%)" : "⚠️ ما لقيتش المنتج نيت - وصف من المنتجات المشابهة") + "<br>📦 المصادر: " + (j.sources||[]).map(function(s){return s.platform+": "+(s.title||"").slice(0,40);}).join(" | ").slice(0,400);
-        fillDescriptions(j.short||"", j.long||"");
-        status.innerHTML += "<br>✅ تم ملء الوصف القصير + الطويل من المنتجات اللي تلقاو.";
-      }catch(e){ status.textContent="❌ "+(e.message||e); }
-    });
-  }
-  // Try mounting now + on changes (React re-renders)
-  setInterval(mount, 1500);
-})();
-</script>
-
-</body>
-</html>
+      if (!imgSrc){ 
